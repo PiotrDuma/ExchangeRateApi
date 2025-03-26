@@ -1,12 +1,7 @@
 package com.github.PiotrDuma.ExchangeRateApi.client;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import com.github.PiotrDuma.ExchangeRateApi.domain.api.CurrencyType;
-import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeRateDTO;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
