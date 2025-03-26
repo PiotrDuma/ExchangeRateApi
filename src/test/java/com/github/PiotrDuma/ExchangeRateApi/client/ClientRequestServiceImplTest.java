@@ -12,12 +12,11 @@ class ClientRequestServiceImplTest {
   private static final CurrencyType base = CurrencyType.PLN;
   private static final List<CurrencyType> target = Arrays.asList(CurrencyType.EUR, CurrencyType.USD);
 
-
   @Autowired
   private ClientRequestService service;
 
   @Test
   void getInstanceFromClient(){
-    service.getExchangeRate(base, target);
+    System.out.println(service.getExchangeRate(base, target));
   }
 }

@@ -1,5 +1,6 @@
 package com.github.PiotrDuma.ExchangeRateApi.client;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.github.PiotrDuma.ExchangeRateApi.domain.api.CurrencyType;
 import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeRateDTO;
 import java.util.List;
@@ -20,17 +21,15 @@ class ClientRequestServiceImpl implements ClientRequestService {
   private static final String v1 = "?currencies=EUR,USD,PLN&base_currency=EUR";
 
   @Override
-  public ExchangeRateDTO getExchangeRate(CurrencyType base, List<CurrencyType> target) {
+  public JsonNode getExchangeRate(CurrencyType base, List<CurrencyType> target) {
     log.debug("Send GET request via " + this.getClass().getName());
     RestTemplate restTemplate = restTemplateBuilder.build();
 
     UriComponentsBuilder uri = UriComponentsBuilder.fromUriString(v1);
 
-    ResponseEntity<Map> response =
-        restTemplate.getForEntity(uri.toUriString(), Map.class);
+    ResponseEntity<JsonNode> response =
+        restTemplate.getForEntity(uri.toUriString(), JsonNode.class);
 
-    response.getBody().forEach((k, v) -> System.out.println(k + " : " + v));
-    System.out.println(response.getBody());
-    return null;
+    return response.getBody();
   }
 }

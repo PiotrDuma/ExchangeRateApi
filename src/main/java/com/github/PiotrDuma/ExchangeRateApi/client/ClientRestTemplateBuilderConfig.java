@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
 @Configuration
-class ClientConfiguration {
+class ClientRestTemplateBuilderConfig {
   @Value("${rest.client.url}")
   private String url;
   @Value("${rest.client.headerTokenKey}")
@@ -18,7 +18,6 @@ class ClientConfiguration {
 
   @Bean
   public RestTemplateBuilder restTemplateBuilder(RestTemplateBuilderConfigurer configurer){
-
     assert url != null;
     assert headerTokenKey != null;
     assert token != null;
