@@ -7,12 +7,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.PiotrDuma.ExchangeRateApi.domain.api.CurrencyType;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -43,7 +42,7 @@ class ClientRequestServiceMockTest {
   private RestTemplateBuilder mockRestTemplateBuilder =
       new RestTemplateBuilder(new MockServerRestTemplateCustomizer());
 
-  private String URI; //TODO: refactor static URL
+  private String URI;
 
   @BeforeEach
   void setUp() {
@@ -52,7 +51,7 @@ class ClientRequestServiceMockTest {
     when(mockRestTemplateBuilder.build()).thenReturn(restTemplate);
     this.service = new ClientRequestServiceImpl(mockRestTemplateBuilder);
     URI = restTemplate.getUriTemplateHandler()
-        .expand("?currencies=EUR,USD,PLN&base_currency=EUR").toString();
+        .expand("?base_currency=EUR&currencies=EUR,USD,PLN").toString();
   }
 
   @Test
@@ -63,12 +62,12 @@ class ClientRequestServiceMockTest {
         .andRespond(MockRestResponseCreators.withSuccess(response, MediaType.APPLICATION_JSON));
 
     JsonNode dto = this.service.getExchangeRate(CurrencyType.EUR, getTarget());
-
+    //provided hashset may fail test URI comparison due to random iteration
     assertEquals(response, dto.toString());
   }
 
   private Set<CurrencyType> getTarget() {
-    return new HashSet<>(Arrays.asList(CurrencyType.USD, CurrencyType.PLN, CurrencyType.EUR));
+    return new TreeSet<>(Arrays.asList(CurrencyType.USD, CurrencyType.PLN, CurrencyType.EUR));
   }
 
   private Map<CurrencyType, Double> getResponseMap(){

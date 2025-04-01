@@ -23,11 +23,22 @@ class ClientRequestServiceImpl implements ClientRequestService {
     log.debug("Send GET request via " + this.getClass().getName());
     RestTemplate restTemplate = restTemplateBuilder.build();
 
-    UriComponentsBuilder uri = UriComponentsBuilder.fromUriString(v1);
+    UriComponentsBuilder uri = UriComponentsBuilder.newInstance()
+        .queryParam("base_currency", base)
+        .queryParam("currencies", extractSetToArgument(base, target));
 
     ResponseEntity<JsonNode> response =
         restTemplate.getForEntity(uri.toUriString(), JsonNode.class);
 
     return response.getBody();
+  }
+
+  private String extractSetToArgument(CurrencyType base, Set<CurrencyType> set){
+    StringBuilder str = new StringBuilder().append(base);
+    set.remove(base);
+    for(CurrencyType type : set){
+       str.append(",").append(type);
+    }
+    return str.toString();
   }
 }
