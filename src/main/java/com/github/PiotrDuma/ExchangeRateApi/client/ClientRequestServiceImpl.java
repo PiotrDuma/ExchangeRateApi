@@ -2,9 +2,7 @@ package com.github.PiotrDuma.ExchangeRateApi.client;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.PiotrDuma.ExchangeRateApi.domain.api.CurrencyType;
-import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeRateDTO;
-import java.util.List;
-import java.util.Map;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -21,7 +19,7 @@ class ClientRequestServiceImpl implements ClientRequestService {
   private static final String v1 = "?currencies=EUR,USD,PLN&base_currency=EUR";
 
   @Override
-  public JsonNode getExchangeRate(CurrencyType base, List<CurrencyType> target) {
+  public JsonNode getExchangeRate(CurrencyType base, Set<CurrencyType> target) {
     log.debug("Send GET request via " + this.getClass().getName());
     RestTemplate restTemplate = restTemplateBuilder.build();
 

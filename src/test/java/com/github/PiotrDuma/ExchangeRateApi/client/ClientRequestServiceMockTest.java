@@ -10,7 +10,9 @@ import com.github.PiotrDuma.ExchangeRateApi.domain.api.CurrencyType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -56,7 +58,6 @@ class ClientRequestServiceMockTest {
   @Test
   void getRequestFromClient() throws JsonProcessingException {
     String response = objectMapper.writeValueAsString(mockClientResponse());
-
     server.expect(MockRestRequestMatchers.method(HttpMethod.GET))
         .andExpect(MockRestRequestMatchers.requestTo(URI))
         .andRespond(MockRestResponseCreators.withSuccess(response, MediaType.APPLICATION_JSON));
@@ -66,9 +67,8 @@ class ClientRequestServiceMockTest {
     assertEquals(response, dto.toString());
   }
 
-  private ArrayList<CurrencyType> getTarget() {
-    return new ArrayList<>(
-        Arrays.asList(CurrencyType.USD, CurrencyType.PLN, CurrencyType.EUR));
+  private Set<CurrencyType> getTarget() {
+    return new HashSet<>(Arrays.asList(CurrencyType.USD, CurrencyType.PLN, CurrencyType.EUR));
   }
 
   private Map<CurrencyType, Double> getResponseMap(){
