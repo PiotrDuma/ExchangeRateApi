@@ -16,7 +16,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 @AllArgsConstructor
 class ClientRequestServiceImpl implements ClientRequestService {
   private final RestTemplateBuilder restTemplateBuilder;
-  private static final String v1 = "?currencies=EUR,USD,PLN&base_currency=EUR";
 
   @Override
   public JsonNode getExchangeRate(CurrencyType base, Set<CurrencyType> target) {
