@@ -2,6 +2,7 @@ package com.github.PiotrDuma.ExchangeRateApi.client;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.header;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -16,6 +17,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
 import org.springframework.boot.test.web.client.MockServerRestTemplateCustomizer;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -30,8 +32,13 @@ import org.springframework.web.client.RestTemplate;
 @RestClientTest
 @Import(ClientRestTemplateBuilderConfig.class)
 class ClientRequestServiceMockTest {
+  @Value("${rest.client.headerTokenKey}")
+  private String headerTokenKey;
+  @Value("${rest.client.token}")
+  private String token;
   private ClientRequestService service;
   private MockRestServiceServer server;
+  private String serverResponse;
 
   @Autowired
   private ObjectMapper objectMapper;
@@ -45,25 +52,46 @@ class ClientRequestServiceMockTest {
   private String URI;
 
   @BeforeEach
-  void setUp() {
+  void setUp() throws JsonProcessingException{
     RestTemplate restTemplate = this.restTemplateBuilder.build();
     server = MockRestServiceServer.bindTo(restTemplate).build();
     when(mockRestTemplateBuilder.build()).thenReturn(restTemplate);
     this.service = new ClientRequestServiceImpl(mockRestTemplateBuilder);
     URI = restTemplate.getUriTemplateHandler()
         .expand("?base_currency=EUR&currencies=EUR,USD,PLN").toString();
+    this.serverResponse = objectMapper.writeValueAsString(mockClientResponse());
   }
 
   @Test
-  void getRequestFromClient() throws JsonProcessingException {
-    String response = objectMapper.writeValueAsString(mockClientResponse());
+  void assertResponseRequestFromClient() {
     server.expect(MockRestRequestMatchers.method(HttpMethod.GET))
-        .andExpect(MockRestRequestMatchers.requestTo(URI))
-        .andRespond(MockRestResponseCreators.withSuccess(response, MediaType.APPLICATION_JSON));
+        .andRespond(MockRestResponseCreators.withSuccess(serverResponse, MediaType.APPLICATION_JSON));
 
     JsonNode dto = this.service.getExchangeRate(CurrencyType.EUR, getTarget());
     //provided hashset may fail test URI comparison due to random iteration
-    assertEquals(response, dto.toString());
+    assertEquals(serverResponse, dto.toString());
+  }
+
+  @Test
+  void testServiceURIBuilder(){
+    server.expect(MockRestRequestMatchers.method(HttpMethod.GET))
+        .andExpect(MockRestRequestMatchers.requestTo(URI))
+        .andRespond(MockRestResponseCreators.withSuccess(serverResponse, MediaType.APPLICATION_JSON));
+
+    JsonNode dto = this.service.getExchangeRate(CurrencyType.EUR, getTarget());
+
+    server.verify();
+  }
+
+  @Test
+  void testRequestHeaderFromClient() {
+    server.expect(MockRestRequestMatchers.method(HttpMethod.GET))
+        .andExpect(header(headerTokenKey, token))
+        .andRespond(MockRestResponseCreators.withSuccess(serverResponse, MediaType.APPLICATION_JSON));;
+
+    JsonNode dto = this.service.getExchangeRate(CurrencyType.EUR, getTarget());
+
+    server.verify();
   }
 
   private Set<CurrencyType> getTarget() {

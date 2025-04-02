@@ -3,13 +3,14 @@ package com.github.PiotrDuma.ExchangeRateApi.client;
 import com.github.PiotrDuma.ExchangeRateApi.domain.api.CurrencyType;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
+@Disabled //skip context building and invoking external service
 class ClientRequestServiceImplTest {
   private static final CurrencyType base = CurrencyType.PLN;
   private static final Set<CurrencyType> target =
