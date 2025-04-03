@@ -1,6 +1,6 @@
-package com.github.PiotrDuma.ExchangeRateApi.model;
+package com.github.PiotrDuma.ExchangeRateApi.domain;
 
-import com.github.PiotrDuma.ExchangeRateApi.model.api.ExchangeService;
+import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,5 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RequiredArgsConstructor
 class ExchangeController {
+
   private final ExchangeService exchangeService;
+
+
 }

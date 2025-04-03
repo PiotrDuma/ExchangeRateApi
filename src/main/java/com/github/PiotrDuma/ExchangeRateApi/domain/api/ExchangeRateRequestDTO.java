@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class ExchangeRateDTO {
+public class ExchangeRateRequestDTO {
 
   private CurrencyType base;
   private Map<CurrencyType, Double> rates;
