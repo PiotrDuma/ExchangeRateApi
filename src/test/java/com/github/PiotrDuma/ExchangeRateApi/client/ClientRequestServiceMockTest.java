@@ -36,9 +36,11 @@ class ClientRequestServiceMockTest {
   private String headerTokenKey;
   @Value("${rest.client.token}")
   private String token;
-  private ClientRequestService service;
-  private MockRestServiceServer server;
   private String serverResponse;
+  private String URI;
+
+  private MockRestServiceServer server;
+  private ClientRequestServiceImpl service;
 
   @Autowired
   private ObjectMapper objectMapper;
@@ -49,7 +51,6 @@ class ClientRequestServiceMockTest {
   private RestTemplateBuilder mockRestTemplateBuilder =
       new RestTemplateBuilder(new MockServerRestTemplateCustomizer());
 
-  private String URI;
 
   @BeforeEach
   void setUp() throws JsonProcessingException{
