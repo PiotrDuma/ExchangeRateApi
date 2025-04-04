@@ -1,12 +1,16 @@
 package com.github.PiotrDuma.ExchangeRateApi.domain;
 
+import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -62,6 +66,16 @@ class ExchangeControllerTest {
 
     Assertions.assertThat(requestDto.getValue().getBase()).isEqualTo(BASE);
     Assertions.assertThat(requestDto.getValue().getGetExchangeCurrencies()).isEqualTo(CURRENCY_TYPES);
+  }
+
+  @Test
+  void getMethodById() throws Exception {
+    mockMvc.perform(get("/api/exchange/" + BASE)
+            .accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+        .andExpect(jsonPath("$.base", is(BASE.toString())))
+        .andExpect(jsonPath("$.exchangeCurrencies", is(CURRENCY_TYPES.toString())));
   }
 
   private ExchangeRateResponseDTO exchangeRateResponseDTO(){
