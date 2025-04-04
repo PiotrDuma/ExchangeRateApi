@@ -1,5 +1,7 @@
 package com.github.PiotrDuma.ExchangeRateApi.domain;
 
+import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeRateRequestDTO;
+import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeRateResponseDTO;
 import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -8,4 +10,8 @@ import org.springframework.stereotype.Service;
 @Slf4j
 class ExchangeServiceImpl implements ExchangeService {
 
+  @Override
+  public ExchangeRateResponseDTO create(ExchangeRateRequestDTO dto) {
+    throw new RuntimeException("Missing implementation");
+  }
 }
