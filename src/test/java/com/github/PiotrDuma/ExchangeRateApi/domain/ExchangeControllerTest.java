@@ -20,6 +20,8 @@ import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeRateRequestDTO;
 import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeRateResponseDTO;
 import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeService;
 import java.time.Clock;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -70,12 +72,28 @@ class ExchangeControllerTest {
 
   @Test
   void getMethodById() throws Exception {
+    when(this.service.getById(any())).thenReturn(exchangeRateResponseDTO());
+
     mockMvc.perform(get("/api/exchange/" + BASE)
             .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
         .andExpect(jsonPath("$.base", is(BASE.toString())))
         .andExpect(jsonPath("$.exchangeCurrencies", is(CURRENCY_TYPES.toString())));
+  }
+
+  @Test
+  void getMethod() throws Exception {
+    List<ExchangeRateResponseDTO> list = new ArrayList<>(List.of(exchangeRateResponseDTO()));
+    list.add(new ExchangeRate(CurrencyType.USD, CURRENCY_TYPES, clock));
+
+    when(this.service.getAll()).thenReturn(list);
+
+    mockMvc.perform(get("/api/exchange")
+            .accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+        .andExpect(jsonPath("$.length()", is(2)));
   }
 
   private ExchangeRateResponseDTO exchangeRateResponseDTO(){
