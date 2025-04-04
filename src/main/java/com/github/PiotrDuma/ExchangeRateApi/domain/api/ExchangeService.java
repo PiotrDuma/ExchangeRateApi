@@ -5,7 +5,7 @@ import java.util.Map;
 
 public interface ExchangeService {
   ExchangeRateResponseDTO create(ExchangeRateRequestDTO dto);
-  ExchangeRateResponseDTO update(CurrencyType baseId, List<CurrencyType> exchangeTypes);
+  ExchangeRateResponseDTO update(CurrencyType baseId, List<CurrencyType> exchangeCurrencies);
   ExchangeRateResponseDTO updateRates(Map<CurrencyType, Double> rates);
   List<ExchangeRateResponseDTO> getAll();
   ExchangeRateResponseDTO getById(CurrencyType baseId);

@@ -17,10 +17,12 @@ import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeRateResponseDTO;
 import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeService;
 import java.time.Clock;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
@@ -32,6 +34,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @Import(FixedClockConfig.class)
 class ExchangeControllerTest {
   private static final Set<CurrencyType> CURRENCY_TYPES = new HashSet<>(List.of(CurrencyType.USD));
+  private static final CurrencyType BASE = CurrencyType.EUR;
   @MockitoBean
   private ExchangeService service;
   @Autowired
@@ -41,7 +44,8 @@ class ExchangeControllerTest {
   @Autowired
   private ObjectMapper objectMapper;
 
-  private CurrencyType base = CurrencyType.EUR;
+  @Captor
+  ArgumentCaptor<ExchangeRateRequestDTO> requestDto;
 
   @Test
   void postMethodShouldInvokeService() throws Exception {
@@ -52,17 +56,19 @@ class ExchangeControllerTest {
           .content(objectMapper.writeValueAsString(getRequestDTO())))
         .andExpect(status().isCreated())
         .andExpect(header().exists("Location"))
-        .andExpect(header().string("Location", containsString("/api/exchange/" + base)));
+        .andExpect(header().string("Location", containsString("/api/exchange/" + BASE)));
 
-    verify(this.service, times(1)).create(any());
+    verify(this.service, times(1)).create(requestDto.capture());
+
+    Assertions.assertThat(requestDto.getValue().getBase()).isEqualTo(BASE);
+    Assertions.assertThat(requestDto.getValue().getGetExchangeCurrencies()).isEqualTo(CURRENCY_TYPES);
   }
 
   private ExchangeRateResponseDTO exchangeRateResponseDTO(){
-    return new ExchangeRate(CurrencyType.EUR, CURRENCY_TYPES, this.clock);
+    return new ExchangeRate(BASE, CURRENCY_TYPES, this.clock);
   }
 
   private ExchangeRateRequestDTO getRequestDTO() {
-    Set<CurrencyType> rates = new LinkedHashSet<>(List.of(CurrencyType.PLN));
-    return new ExchangeRateRequestDTO(base, rates);
+    return new ExchangeRateRequestDTO(BASE, CURRENCY_TYPES);
   }
 }

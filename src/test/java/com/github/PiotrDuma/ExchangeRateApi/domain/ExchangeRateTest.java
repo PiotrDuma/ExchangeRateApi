@@ -36,7 +36,7 @@ class ExchangeRateTest {
     ExchangeRate obj = getExchangeRate();
 
     assertThat(obj.getBase()).isEqualTo(CurrencyType.EUR);
-    assertThat(obj.getExchangeTypes()).isEqualTo(CURRENCY_TYPES);
+    assertThat(obj.getExchangeCurrencies()).isEqualTo(CURRENCY_TYPES);
     assertThat(obj.getExchangeRates().size()).isEqualTo(0);
     assertThat(obj.getCreated()).isEqualTo(this.clock.instant());
     assertThat(obj.getLastUpdated()).isEqualTo(this.clock.instant());
@@ -50,12 +50,12 @@ class ExchangeRateTest {
     expected.add(CurrencyType.JPY);
 
 
-    assertThat(obj.getExchangeTypes().size()).isEqualTo(1);
+    assertThat(obj.getExchangeCurrencies().size()).isEqualTo(1);
 
-    obj.updateExchangeTypes(expected, this.clock);
+    obj.updateExchangeCurrencies(expected, this.clock);
 
-    assertThat(obj.getExchangeTypes().size()).isEqualTo(2);
-    assertThat(obj.getExchangeTypes()).isEqualTo(expected);
+    assertThat(obj.getExchangeCurrencies().size()).isEqualTo(2);
+    assertThat(obj.getExchangeCurrencies()).isEqualTo(expected);
     assertThat(obj.getLastUpdated()).isEqualTo(this.clock.instant());
   }
 

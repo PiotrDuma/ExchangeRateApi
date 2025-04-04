@@ -6,7 +6,7 @@ import java.util.Set;
 
 public interface ExchangeRateResponseDTO {
   CurrencyType getBase();
-  Set<CurrencyType> getExchangeTypes();
+  Set<CurrencyType> getExchangeCurrencies();
   Map<CurrencyType, Double> getExchangeRates();
   Instant getCreated();
   Instant getLastUpdated();

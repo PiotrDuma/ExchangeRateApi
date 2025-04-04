@@ -10,7 +10,7 @@ import java.util.Set;
 
 class ExchangeRate implements ExchangeRateResponseDTO {
   private CurrencyType base;
-  private Set<CurrencyType> exchangeTypes;
+  private Set<CurrencyType> exchangeCurrencies;
   private Map<CurrencyType, Double> rates;
   private Instant created;
   private Instant updated;
@@ -19,9 +19,9 @@ class ExchangeRate implements ExchangeRateResponseDTO {
   ExchangeRate() {
   }
 
-  ExchangeRate(CurrencyType base, Set<CurrencyType> exchangeTypes, Clock clock) {
+  ExchangeRate(CurrencyType base, Set<CurrencyType> exchangeCurrencies, Clock clock) {
     this.base = base;
-    this.exchangeTypes = exchangeTypes;
+    this.exchangeCurrencies = exchangeCurrencies;
     this.rates = new HashMap<>();
     this.created = Instant.now(clock);
     this.updated = created;
@@ -33,8 +33,8 @@ class ExchangeRate implements ExchangeRateResponseDTO {
     this.updated = Instant.now(clock);
   }
 
-  public void updateExchangeTypes(Set<CurrencyType> exchangeTypes, Clock clock){
-    this.exchangeTypes = exchangeTypes;
+  public void updateExchangeCurrencies(Set<CurrencyType> exchangeCurrencies, Clock clock){
+    this.exchangeCurrencies = exchangeCurrencies;
     this.updated = Instant.now(clock);
   }
 
@@ -44,8 +44,8 @@ class ExchangeRate implements ExchangeRateResponseDTO {
   }
 
   @Override
-  public Set<CurrencyType> getExchangeTypes() {
-    return this.exchangeTypes;
+  public Set<CurrencyType> getExchangeCurrencies() {
+    return this.exchangeCurrencies;
   }
 
   @Override
