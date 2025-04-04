@@ -1,5 +1,6 @@
 package com.github.PiotrDuma.ExchangeRateApi.domain;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.mockito.Mockito.any;
@@ -8,6 +9,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -21,7 +23,6 @@ import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeRateResponseDTO;
 import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeService;
 import java.time.Clock;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -52,6 +53,8 @@ class ExchangeControllerTest {
 
   @Captor
   ArgumentCaptor<ExchangeRateRequestDTO> requestDto;
+  @Captor
+  ArgumentCaptor<List<CurrencyType>> typesCaptor;
 
   @Test
   void postMethodShouldInvokeService() throws Exception {
@@ -66,8 +69,8 @@ class ExchangeControllerTest {
 
     verify(this.service, times(1)).create(requestDto.capture());
 
-    Assertions.assertThat(requestDto.getValue().getBase()).isEqualTo(BASE);
-    Assertions.assertThat(requestDto.getValue().getGetExchangeCurrencies()).isEqualTo(CURRENCY_TYPES);
+    assertThat(requestDto.getValue().getBase()).isEqualTo(BASE);
+    assertThat(requestDto.getValue().getGetExchangeCurrencies()).isEqualTo(CURRENCY_TYPES);
   }
 
   @Test
@@ -94,6 +97,21 @@ class ExchangeControllerTest {
         .andExpect(status().isOk())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
         .andExpect(jsonPath("$.length()", is(2)));
+  }
+
+  @Test
+  void updateMethod() throws Exception{
+    ArgumentCaptor<CurrencyType> baseCaptor = ArgumentCaptor.forClass(CurrencyType.class);
+
+    mockMvc.perform(put("/api/exchange/" + BASE)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(CURRENCY_TYPES)))
+        .andExpect(status().isNoContent());
+
+    verify(this.service, times(1)).update(baseCaptor.capture(), typesCaptor.capture());
+
+    assertThat(baseCaptor.getValue()).isEqualTo(BASE);
+    assertThat(typesCaptor.getValue()).isEqualTo(CURRENCY_TYPES.stream().toList());
   }
 
   private ExchangeRateResponseDTO exchangeRateResponseDTO(){
