@@ -1,12 +1,13 @@
 package com.github.PiotrDuma.ExchangeRateApi.domain;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -26,7 +27,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
@@ -55,6 +55,8 @@ class ExchangeControllerTest {
   ArgumentCaptor<ExchangeRateRequestDTO> requestDto;
   @Captor
   ArgumentCaptor<List<CurrencyType>> typesCaptor;
+  @Captor
+  ArgumentCaptor<CurrencyType> baseCaptor;
 
   @Test
   void postMethodShouldInvokeService() throws Exception {
@@ -101,7 +103,6 @@ class ExchangeControllerTest {
 
   @Test
   void updateMethod() throws Exception{
-    ArgumentCaptor<CurrencyType> baseCaptor = ArgumentCaptor.forClass(CurrencyType.class);
 
     mockMvc.perform(put("/api/exchange/" + BASE)
             .contentType(MediaType.APPLICATION_JSON)
@@ -112,6 +113,16 @@ class ExchangeControllerTest {
 
     assertThat(baseCaptor.getValue()).isEqualTo(BASE);
     assertThat(typesCaptor.getValue()).isEqualTo(CURRENCY_TYPES.stream().toList());
+  }
+
+  @Test
+  void deleteMethod() throws Exception{
+    mockMvc.perform(delete("/api/exchange/" + BASE))
+        .andExpect(status().isNoContent());
+
+    verify(this.service, times(1)).delete(baseCaptor.capture());
+
+    assertThat(baseCaptor.getValue()).isEqualTo(BASE);
   }
 
   private ExchangeRateResponseDTO exchangeRateResponseDTO(){
