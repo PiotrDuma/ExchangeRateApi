@@ -2,6 +2,7 @@ package com.github.PiotrDuma.ExchangeRateApi.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsIterableContaining.hasItem;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.times;
@@ -84,13 +85,13 @@ class ExchangeControllerTest {
         .andExpect(status().isOk())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
         .andExpect(jsonPath("$.base", is(BASE.toString())))
-        .andExpect(jsonPath("$.exchangeCurrencies", is(CURRENCY_TYPES.toString())));
+        .andExpect(jsonPath("$.exchangeCurrencies", hasItem(CurrencyType.USD.toString())));
   }
 
   @Test
   void getMethod() throws Exception {
     List<ExchangeRateFacade> list = new ArrayList<>(List.of(exchangeRateResponseDTO()));
-    list.add(new com.github.PiotrDuma.ExchangeRateApi.domain.ExchangeRate(CurrencyType.USD, CURRENCY_TYPES, clock));
+    list.add(new ExchangeRate(CurrencyType.USD, CURRENCY_TYPES, clock));
 
     when(this.service.getAll()).thenReturn(list);
 
@@ -126,7 +127,7 @@ class ExchangeControllerTest {
   }
 
   private ExchangeRateFacade exchangeRateResponseDTO(){
-    return new com.github.PiotrDuma.ExchangeRateApi.domain.ExchangeRate(BASE, CURRENCY_TYPES, this.clock);
+    return new ExchangeRate(BASE, CURRENCY_TYPES, this.clock);
   }
 
   private ExchangeRateRequestDTO getRequestDTO() {

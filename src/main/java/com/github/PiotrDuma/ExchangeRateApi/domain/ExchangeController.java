@@ -1,9 +1,11 @@
 package com.github.PiotrDuma.ExchangeRateApi.domain;
 
+import com.github.PiotrDuma.ExchangeRateApi.domain.api.CurrencyType;
 import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeRateRequestDTO;
 import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeRateFacade;
 import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeRateResponseDTO;
 import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeService;
+import jakarta.websocket.server.PathParam;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +39,15 @@ class ExchangeController {
         .stream()
         .map(ExchangeRateFacade::toDto)
         .toList();
+
+    return new ResponseEntity<>(response, HttpStatus.OK);
+  }
+
+  @GetMapping("/api/exchange/{baseId}")
+  public ResponseEntity<ExchangeRateResponseDTO> getCurrencyById(@PathParam("baseId")
+      CurrencyType type){
+
+    ExchangeRateResponseDTO response = this.exchangeService.getById(type).toDto();
 
     return new ResponseEntity<>(response, HttpStatus.OK);
   }
