@@ -1,5 +1,7 @@
 package com.github.PiotrDuma.ExchangeRateApi.domain;
 
+import static com.github.PiotrDuma.ExchangeRateApi.domain.ExchangeController.URI;
+import static com.github.PiotrDuma.ExchangeRateApi.domain.ExchangeController.URL;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsIterableContaining.hasItem;
@@ -63,12 +65,12 @@ class ExchangeControllerTest {
   void postMethodShouldInvokeService() throws Exception {
     when(this.service.create(any())).thenReturn(exchangeRateResponseDTO());
 
-    mockMvc.perform(post("/api/exchange")
+    mockMvc.perform(post(URL)
           .contentType(MediaType.APPLICATION_JSON)
           .content(objectMapper.writeValueAsString(getRequestDTO())))
         .andExpect(status().isCreated())
         .andExpect(header().exists("Location"))
-        .andExpect(header().string("Location", containsString("/api/exchange/" + BASE)));
+        .andExpect(header().string("Location", containsString(URL + "/" + BASE)));
 
     verify(this.service, times(1)).create(requestDto.capture());
 
@@ -80,7 +82,7 @@ class ExchangeControllerTest {
   void getMethodById() throws Exception {
     when(this.service.getById(any())).thenReturn(exchangeRateResponseDTO());
 
-    mockMvc.perform(get("/api/exchange/" + BASE)
+    mockMvc.perform(get(URI, BASE)
             .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -99,7 +101,7 @@ class ExchangeControllerTest {
 
     when(this.service.getAll()).thenReturn(list);
 
-    mockMvc.perform(get("/api/exchange")
+    mockMvc.perform(get(URL)
             .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -108,7 +110,7 @@ class ExchangeControllerTest {
 
   @Test
   void updateMethod() throws Exception{
-    mockMvc.perform(put("/api/exchange/" + BASE)
+    mockMvc.perform(put(URI, BASE)
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(new ExchangeController.UpdateDto(CURRENCY_TYPES.stream().toList()))))
         .andExpect(status().isNoContent());
@@ -121,7 +123,7 @@ class ExchangeControllerTest {
 
   @Test
   void deleteMethod() throws Exception{
-    mockMvc.perform(delete("/api/exchange/" + BASE))
+    mockMvc.perform(delete(URI, BASE))
         .andExpect(status().isNoContent());
 
     verify(this.service, times(1)).delete(baseCaptor.capture());

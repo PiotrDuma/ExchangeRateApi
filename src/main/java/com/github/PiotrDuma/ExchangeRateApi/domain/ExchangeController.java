@@ -23,19 +23,22 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RequiredArgsConstructor
 class ExchangeController {
+  public static final String URL = "/api/currency";
+  public static final String PATH_VARIABLE = "baseId";
+  public static final String URI = URL + "/{" + PATH_VARIABLE + "}";
 
   private final ExchangeService exchangeService;
 
-  @PostMapping("/api/exchange")
+  @PostMapping(URL)
   public ResponseEntity handlePostRequest(@RequestBody ExchangeRateRequestDTO dto){
     ExchangeRateFacade exRate = this.exchangeService.create(dto);
 
     HttpHeaders headers = new HttpHeaders();
-    headers.put("Location", List.of( "/api/exchange/" + exRate.getBase()));
+    headers.put("Location", List.of( URL + "/" + exRate.getBase()));
     return new ResponseEntity(headers, HttpStatus.CREATED);
   }
 
-  @GetMapping("/api/exchange")
+  @GetMapping(URL)
   public ResponseEntity<List<ExchangeRateResponseDTO>> getAllCurrencies(){
     List<ExchangeRateResponseDTO> response = this.exchangeService.getAll()
         .stream()
@@ -45,8 +48,8 @@ class ExchangeController {
     return new ResponseEntity<>(response, HttpStatus.OK);
   }
 
-  @GetMapping("/api/exchange/{baseId}")
-  public ResponseEntity<ExchangeRateResponseDTO> getCurrencyById(@PathVariable("baseId")
+  @GetMapping(URI)
+  public ResponseEntity<ExchangeRateResponseDTO> getCurrencyById(@PathVariable(PATH_VARIABLE)
       CurrencyType type){
 
     ExchangeRateResponseDTO response = this.exchangeService.getById(type).toDto();
@@ -54,8 +57,8 @@ class ExchangeController {
     return new ResponseEntity<>(response, HttpStatus.OK);
   }
 
-  @PutMapping("/api/exchange/{baseId}")
-  public ResponseEntity updateCurrency(@PathVariable("baseId") CurrencyType baseId,
+  @PutMapping(URI)
+  public ResponseEntity updateCurrency(@PathVariable(PATH_VARIABLE) CurrencyType baseId,
       @RequestBody UpdateDto dto){
 
     this.exchangeService.update(baseId, dto.types());
@@ -63,8 +66,8 @@ class ExchangeController {
     return new ResponseEntity(HttpStatus.NO_CONTENT);
   }
 
-  @DeleteMapping("/api/exchange/{baseId}")
-  public ResponseEntity deleteCurrency(@PathVariable("baseId") CurrencyType baseId){
+  @DeleteMapping(URI)
+  public ResponseEntity deleteCurrency(@PathVariable(PATH_VARIABLE) CurrencyType baseId){
 
     this.exchangeService.delete(baseId);
     return new ResponseEntity(HttpStatus.NO_CONTENT);
