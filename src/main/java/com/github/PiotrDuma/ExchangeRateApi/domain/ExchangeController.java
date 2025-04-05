@@ -13,8 +13,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -44,11 +47,26 @@ class ExchangeController {
   }
 
   @GetMapping("/api/exchange/{baseId}")
-  public ResponseEntity<ExchangeRateResponseDTO> getCurrencyById(@PathParam("baseId")
+  public ResponseEntity<ExchangeRateResponseDTO> getCurrencyById(@PathVariable("baseId")
       CurrencyType type){
 
     ExchangeRateResponseDTO response = this.exchangeService.getById(type).toDto();
 
     return new ResponseEntity<>(response, HttpStatus.OK);
+  }
+
+  @PutMapping("/api/exchange/{baseId}")
+  public ResponseEntity updateCurrency(@PathVariable("baseId") CurrencyType baseId,
+      @RequestBody UpdateDto dto){
+
+    this.exchangeService.update(baseId, dto.types());
+
+    return new ResponseEntity(HttpStatus.NO_CONTENT);
+  }
+
+  public record UpdateDto(List<CurrencyType> types){
+    public UpdateDto(List<CurrencyType> types){
+      this.types = types;
+    }
   }
 }

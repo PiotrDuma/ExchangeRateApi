@@ -86,6 +86,10 @@ class ExchangeControllerTest {
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
         .andExpect(jsonPath("$.base", is(BASE.toString())))
         .andExpect(jsonPath("$.exchangeCurrencies", hasItem(CurrencyType.USD.toString())));
+
+    verify(this.service, times(1)).getById(baseCaptor.capture());
+
+    assertThat(baseCaptor.getValue()).isEqualTo(BASE);
   }
 
   @Test
@@ -104,10 +108,9 @@ class ExchangeControllerTest {
 
   @Test
   void updateMethod() throws Exception{
-
     mockMvc.perform(put("/api/exchange/" + BASE)
             .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(CURRENCY_TYPES)))
+            .content(objectMapper.writeValueAsString(new ExchangeController.UpdateDto(CURRENCY_TYPES.stream().toList()))))
         .andExpect(status().isNoContent());
 
     verify(this.service, times(1)).update(baseCaptor.capture(), typesCaptor.capture());
