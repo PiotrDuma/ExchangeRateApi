@@ -3,12 +3,17 @@ package com.github.PiotrDuma.ExchangeRateApi.domain.api;
 import java.time.Instant;
 import java.util.Map;
 import java.util.Set;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-public interface ExchangeRateResponseDTO {
-  CurrencyType getBase();
-  Set<CurrencyType> getExchangeCurrencies();
-  Map<CurrencyType, Double> getExchangeRates();
-  Instant getCreated();
-  Instant getLastUpdated();
-  Double getConvertedSum();
+@Data
+@AllArgsConstructor(access = AccessLevel.PUBLIC)
+public class ExchangeRateResponseDTO {
+  private CurrencyType base;
+  private Set<CurrencyType> exchangeCurrencies;
+  private Map<CurrencyType, Double> rates;
+  private Instant created;
+  private Instant updated;
+  private Double convertedSum;
 }

@@ -4,10 +4,10 @@ import java.util.List;
 import java.util.Map;
 
 public interface ExchangeService {
-  ExchangeRateResponseDTO create(ExchangeRateRequestDTO dto);
-  ExchangeRateResponseDTO update(CurrencyType baseId, List<CurrencyType> exchangeCurrencies);
-  ExchangeRateResponseDTO updateRates(Map<CurrencyType, Double> rates);
-  List<ExchangeRateResponseDTO> getAll();
-  ExchangeRateResponseDTO getById(CurrencyType baseId);
+  ExchangeRateFacade create(ExchangeRateRequestDTO dto);
+  ExchangeRateFacade update(CurrencyType baseId, List<CurrencyType> exchangeCurrencies);
+  ExchangeRateFacade updateRates(Map<CurrencyType, Double> rates);
+  List<ExchangeRateFacade> getAll();
+  ExchangeRateFacade getById(CurrencyType baseId);
   void delete(CurrencyType baseId);
 }

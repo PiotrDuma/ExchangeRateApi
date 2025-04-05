@@ -20,7 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.PiotrDuma.ExchangeRateApi.config.FixedClockConfig;
 import com.github.PiotrDuma.ExchangeRateApi.domain.api.CurrencyType;
 import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeRateRequestDTO;
-import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeRateResponseDTO;
+import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeRateFacade;
 import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeService;
 import java.time.Clock;
 import java.util.ArrayList;
@@ -89,8 +89,8 @@ class ExchangeControllerTest {
 
   @Test
   void getMethod() throws Exception {
-    List<ExchangeRateResponseDTO> list = new ArrayList<>(List.of(exchangeRateResponseDTO()));
-    list.add(new ExchangeRate(CurrencyType.USD, CURRENCY_TYPES, clock));
+    List<ExchangeRateFacade> list = new ArrayList<>(List.of(exchangeRateResponseDTO()));
+    list.add(new com.github.PiotrDuma.ExchangeRateApi.domain.ExchangeRate(CurrencyType.USD, CURRENCY_TYPES, clock));
 
     when(this.service.getAll()).thenReturn(list);
 
@@ -125,8 +125,8 @@ class ExchangeControllerTest {
     assertThat(baseCaptor.getValue()).isEqualTo(BASE);
   }
 
-  private ExchangeRateResponseDTO exchangeRateResponseDTO(){
-    return new ExchangeRate(BASE, CURRENCY_TYPES, this.clock);
+  private ExchangeRateFacade exchangeRateResponseDTO(){
+    return new com.github.PiotrDuma.ExchangeRateApi.domain.ExchangeRate(BASE, CURRENCY_TYPES, this.clock);
   }
 
   private ExchangeRateRequestDTO getRequestDTO() {
