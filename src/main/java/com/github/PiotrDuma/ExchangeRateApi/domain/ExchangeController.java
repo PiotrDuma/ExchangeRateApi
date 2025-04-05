@@ -1,23 +1,22 @@
 package com.github.PiotrDuma.ExchangeRateApi.domain;
 
 import com.github.PiotrDuma.ExchangeRateApi.domain.api.CurrencyType;
-import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeRateRequestDTO;
 import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeRateFacade;
+import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeRateRequestDTO;
 import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeRateResponseDTO;
 import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeService;
-import jakarta.websocket.server.PathParam;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -61,6 +60,13 @@ class ExchangeController {
 
     this.exchangeService.update(baseId, dto.types());
 
+    return new ResponseEntity(HttpStatus.NO_CONTENT);
+  }
+
+  @DeleteMapping("/api/exchange/{baseId}")
+  public ResponseEntity deleteCurrency(@PathVariable("baseId") CurrencyType baseId){
+
+    this.exchangeService.delete(baseId);
     return new ResponseEntity(HttpStatus.NO_CONTENT);
   }
 
