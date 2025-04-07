@@ -4,6 +4,7 @@ import com.github.PiotrDuma.ExchangeRateApi.domain.api.CurrencyType;
 import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeRateRequestDTO;
 import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeRateResponseDTO;
 import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeService;
+import com.github.PiotrDuma.ExchangeRateApi.exceptions.ResourceNotFoundException;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +53,8 @@ class ExchangeController {
   public ResponseEntity<ExchangeRateResponseDTO> getCurrencyById(@PathVariable(PATH_VARIABLE)
       CurrencyType type){
 
-    ExchangeRateResponseDTO response = this.exchangeService.getById(type).orElseThrow();
+    ExchangeRateResponseDTO response = this.exchangeService.getById(type)
+        .orElseThrow(ResourceNotFoundException::new);
 
     return new ResponseEntity<>(response, HttpStatus.OK);
   }

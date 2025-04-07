@@ -95,6 +95,17 @@ class ExchangeControllerTest {
   }
 
   @Test
+  void getMethodByIdNotFound() throws Exception {
+    when(this.service.getById(any())).thenReturn(Optional.empty());
+
+    mockMvc.perform(get(URI, BASE)
+            .accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().isNotFound());
+
+    verify(this.service, times(1)).getById(any());
+  }
+
+  @Test
   void getMethod() throws Exception {
     List<ExchangeRateResponseDTO> list = new ArrayList<>(List.of(exchangeRateResponseDTO()));
     ExchangeRateResponseDTO secondDTO = exchangeRateResponseDTO();
