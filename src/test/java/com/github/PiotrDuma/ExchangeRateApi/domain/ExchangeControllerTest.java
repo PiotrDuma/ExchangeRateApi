@@ -3,6 +3,9 @@ package com.github.PiotrDuma.ExchangeRateApi.domain;
 import static com.github.PiotrDuma.ExchangeRateApi.domain.ExchangeController.URI;
 import static com.github.PiotrDuma.ExchangeRateApi.domain.ExchangeController.URL;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.hasEntry;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsIterableContaining.hasItem;
 import static org.hamcrest.core.StringContains.containsString;
@@ -20,6 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.PiotrDuma.ExchangeRateApi.domain.ExchangeController.UpdateDto;
 import com.github.PiotrDuma.ExchangeRateApi.domain.api.CurrencyType;
 import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeRateRequestDTO;
 import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeRateResponseDTO;
@@ -75,7 +79,66 @@ class ExchangeControllerTest {
     verify(this.service, times(1)).create(requestDto.capture());
 
     assertThat(requestDto.getValue().getBase()).isEqualTo(BASE);
-    assertThat(requestDto.getValue().getGetExchangeCurrencies()).isEqualTo(CURRENCY_TYPES);
+    assertThat(requestDto.getValue().getExchangeCurrencies()).isEqualTo(CURRENCY_TYPES);
+  }
+
+  @Test
+  void postMethodShouldThrowWhenBaseFieldIsNull() throws Exception{
+    ExchangeRateRequestDTO DTO = getRequestDTO();
+    DTO.setBase(null);
+    String requestBody = objectMapper.writeValueAsString(DTO);
+
+    mockMvc.perform(post(URL)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(requestBody))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.details", hasSize(1)))
+        .andExpect(jsonPath("$.details",
+            containsInAnyOrder(hasEntry("base", ExchangeRateRequestDTO.NULL_VALUE))));
+  }
+
+  @Test
+  void postMethodShouldThrowWhenCurrenciesListIsNull() throws Exception{
+    ExchangeRateRequestDTO DTO = getRequestDTO();
+    DTO.setExchangeCurrencies(null);
+    String requestBody = objectMapper.writeValueAsString(DTO);
+
+    mockMvc.perform(post(URL)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(requestBody))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.details", hasSize(2)))
+        .andExpect(jsonPath("$.details[*].exchangeCurrencies",
+            hasItem(ExchangeRateRequestDTO.NULL_VALUE)));
+  }
+
+  @Test
+  void postMethodShouldThrowWhenCurrenciesListIsEmpty() throws Exception{
+    ExchangeRateRequestDTO DTO = getRequestDTO();
+    DTO.setExchangeCurrencies(new HashSet<>());
+    String requestBody = objectMapper.writeValueAsString(DTO);
+
+    mockMvc.perform(post(URL)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(requestBody))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.details", hasSize(1)))
+        .andExpect(jsonPath("$.details[*].exchangeCurrencies",
+           hasItem(ExchangeRateRequestDTO.EMPTY_VALUE)));
+  }
+
+  @Test
+  void postMethodShouldThrowWhenRequestBodyIsInvalid() throws Exception{
+    ExchangeRateRequestDTO DTO = getRequestDTO();
+    DTO.setBase(null);
+    DTO.setExchangeCurrencies(null);
+    String requestBody = objectMapper.writeValueAsString(DTO);
+
+    mockMvc.perform(post(URL)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(requestBody))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.details", hasSize(3)));
   }
 
   @Test
@@ -123,15 +186,37 @@ class ExchangeControllerTest {
 
   @Test
   void updateMethod() throws Exception{
+    UpdateDto updateDto = new UpdateDto(CURRENCY_TYPES.stream().toList());
     mockMvc.perform(put(URI, BASE)
             .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(new ExchangeController.UpdateDto(CURRENCY_TYPES.stream().toList()))))
+            .content(objectMapper.writeValueAsString(updateDto)))
         .andExpect(status().isNoContent());
 
-    verify(this.service, times(1)).update(baseCaptor.capture(), typesCaptor.capture());
+    verify(this.service, times(1))
+        .update(baseCaptor.capture(), typesCaptor.capture());
 
     assertThat(baseCaptor.getValue()).isEqualTo(BASE);
     assertThat(typesCaptor.getValue()).isEqualTo(CURRENCY_TYPES.stream().toList());
+  }
+
+  @Test
+  void updateMethodShouldThrowWhenRequestBodyIsNull() throws Exception{
+    UpdateDto updateDto = new UpdateDto(null);
+    mockMvc.perform(put(URI, BASE)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(updateDto)))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.details[*].types", hasItem(ExchangeController.NULL_VALUE)));
+  }
+
+  @Test
+  void updateMethodShouldThrowWhenRequestBodyIsEmpty() throws Exception{
+    UpdateDto updateDto = new UpdateDto(new ArrayList<>());
+    mockMvc.perform(put(URI, BASE)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(updateDto)))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.details[*].types", hasItem(ExchangeController.EMPTY_VALUE)));
   }
 
   @Test
