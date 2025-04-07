@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 import com.github.PiotrDuma.ExchangeRateApi.domain.api.CurrencyType;
-import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeRateResponseDTO;
 import java.time.Clock;
 import java.time.Instant;
 import java.util.HashMap;
@@ -12,7 +11,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -76,19 +74,6 @@ class ExchangeRateTest {
     assertThat(obj.getExchangeRates().size()).isEqualTo(1);
     assertThat(obj.getExchangeRates()).isEqualTo(expected);
     assertThat(obj.getLastUpdated()).isEqualTo(this.clock.instant());
-  }
-
-  @Test
-  void testToDtoMethod(){
-    ExchangeRate exRate = getExchangeRate();
-    ExchangeRateResponseDTO result = exRate.toDto();
-
-    assertThat(result.getBase()).isEqualTo(exRate.getBase());
-    assertThat(result.getExchangeCurrencies()).isEqualTo(exRate.getExchangeCurrencies());
-    assertThat(result.getRates()).isEqualTo(exRate.getExchangeRates());
-    assertThat(result.getCreated()).isEqualTo(exRate.getCreated());
-    assertThat(result.getUpdated()).isEqualTo(exRate.getLastUpdated());
-    assertThat(result.getConvertedSum()).isEqualTo(exRate.getConvertedSum());
   }
 
   private ExchangeRate getExchangeRate(){

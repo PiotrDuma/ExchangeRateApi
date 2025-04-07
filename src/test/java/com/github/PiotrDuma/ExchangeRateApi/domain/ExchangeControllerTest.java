@@ -20,28 +20,29 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.PiotrDuma.ExchangeRateApi.config.FixedClockConfig;
 import com.github.PiotrDuma.ExchangeRateApi.domain.api.CurrencyType;
 import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeRateRequestDTO;
-import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeRateFacade;
+import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeRateResponseDTO;
 import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeService;
 import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(ExchangeController.class)
-@Import(FixedClockConfig.class)
 class ExchangeControllerTest {
   private static final Set<CurrencyType> CURRENCY_TYPES = new HashSet<>(List.of(CurrencyType.USD));
   private static final CurrencyType BASE = CurrencyType.EUR;
@@ -49,8 +50,7 @@ class ExchangeControllerTest {
   private ExchangeService service;
   @Autowired
   private MockMvc mockMvc;
-  @Autowired
-  private Clock clock;
+
   @Autowired
   private ObjectMapper objectMapper;
 
@@ -80,7 +80,7 @@ class ExchangeControllerTest {
 
   @Test
   void getMethodById() throws Exception {
-    when(this.service.getById(any())).thenReturn(exchangeRateResponseDTO());
+    when(this.service.getById(any())).thenReturn(Optional.of(exchangeRateResponseDTO()));
 
     mockMvc.perform(get(URI, BASE)
             .accept(MediaType.APPLICATION_JSON))
@@ -96,8 +96,10 @@ class ExchangeControllerTest {
 
   @Test
   void getMethod() throws Exception {
-    List<ExchangeRateFacade> list = new ArrayList<>(List.of(exchangeRateResponseDTO()));
-    list.add(new ExchangeRate(CurrencyType.USD, CURRENCY_TYPES, clock));
+    List<ExchangeRateResponseDTO> list = new ArrayList<>(List.of(exchangeRateResponseDTO()));
+    ExchangeRateResponseDTO secondDTO = exchangeRateResponseDTO();
+    secondDTO.setBase(CurrencyType.USD);
+    list.add(secondDTO);
 
     when(this.service.getAll()).thenReturn(list);
 
@@ -131,11 +133,22 @@ class ExchangeControllerTest {
     assertThat(baseCaptor.getValue()).isEqualTo(BASE);
   }
 
-  private ExchangeRateFacade exchangeRateResponseDTO(){
-    return new ExchangeRate(BASE, CURRENCY_TYPES, this.clock);
+  private ExchangeRateResponseDTO exchangeRateResponseDTO(){
+    return ExchangeRateResponseDTO.builder()
+        .base(BASE)
+        .exchangeCurrencies(CURRENCY_TYPES)
+        .rates(new HashMap<>())
+        .created(getClock().instant())
+        .updated(getClock().instant())
+        .convertedSum(0d)
+        .build();
   }
 
   private ExchangeRateRequestDTO getRequestDTO() {
     return new ExchangeRateRequestDTO(BASE, CURRENCY_TYPES);
+  }
+
+  private Clock getClock(){
+    return Clock.fixed(Instant.parse("2025-10-10T10:15:30.00Z"), ZoneId.systemDefault());
   }
 }

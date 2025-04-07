@@ -2,11 +2,11 @@ package com.github.PiotrDuma.ExchangeRateApi.domain;
 
 import com.github.PiotrDuma.ExchangeRateApi.domain.api.CurrencyType;
 import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeRateRequestDTO;
-import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeRateFacade;
 import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeRateResponseDTO;
 import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeService;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -15,27 +15,28 @@ import org.springframework.stereotype.Service;
 class ExchangeServiceImpl implements ExchangeService {
 
   @Override
-  public ExchangeRateFacade create(ExchangeRateRequestDTO dto) {
+  public ExchangeRateResponseDTO create(ExchangeRateRequestDTO dto) {
     throw new RuntimeException("Missing implementation");
   }
 
   @Override
-  public ExchangeRateFacade update(CurrencyType baseId, List<CurrencyType> exchangeTypes) {
+  public ExchangeRateResponseDTO update(CurrencyType baseId,
+      List<CurrencyType> exchangeCurrencies) {
     throw new RuntimeException("Missing implementation");
   }
 
   @Override
-  public ExchangeRateFacade updateRates(Map<CurrencyType, Double> rates) {
+  public ExchangeRateResponseDTO updateRates(Map<CurrencyType, Double> rates) {
     throw new RuntimeException("Missing implementation");
   }
 
   @Override
-  public List<ExchangeRateFacade> getAll() {
+  public List<ExchangeRateResponseDTO> getAll() {
     throw new RuntimeException("Missing implementation");
   }
 
   @Override
-  public ExchangeRateFacade getById(CurrencyType baseId) {
+  public Optional<ExchangeRateResponseDTO> getById(CurrencyType baseId) {
     throw new RuntimeException("Missing implementation");
   }
 

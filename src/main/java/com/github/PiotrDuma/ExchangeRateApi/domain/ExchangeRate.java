@@ -2,7 +2,6 @@ package com.github.PiotrDuma.ExchangeRateApi.domain;
 
 import com.github.PiotrDuma.ExchangeRateApi.domain.api.CurrencyType;
 import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeRateFacade;
-import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeRateResponseDTO;
 import java.time.Clock;
 import java.time.Instant;
 import java.util.HashMap;
@@ -67,11 +66,6 @@ class ExchangeRate implements ExchangeRateFacade {
   @Override
   public Double getConvertedSum() {
     return this.convertedSum;
-  }
-
-  @Override
-  public ExchangeRateResponseDTO toDto() {
-    return new ExchangeRateResponseDTO(base, exchangeCurrencies, rates, created, updated, convertedSum);
   }
 
   protected void setLastUpdated(Instant time){

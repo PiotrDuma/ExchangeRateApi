@@ -11,5 +11,4 @@ public interface ExchangeRateFacade {
   Instant getCreated();
   Instant getLastUpdated();
   Double getConvertedSum();
-  ExchangeRateResponseDTO toDto();
 }
