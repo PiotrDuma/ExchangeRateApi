@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,7 @@ import org.springframework.web.client.RestTemplate;
 
 @RestClientTest
 @Import(ClientRestTemplateBuilderConfig.class)
+@Tag("UnitTest")
 class ClientRequestServiceMockTest {
   @Value("${rest.client.headerTokenKey}")
   private String headerTokenKey;

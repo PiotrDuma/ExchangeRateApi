@@ -9,11 +9,13 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.util.HashSet;
 import java.util.List;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
+@Tag("UnitTest")
 class ExchangeRateToDTOMapperTest {
 
   private ExchangeRateToDTOMapper mapper = new ExchangeRateToDTOMapper();
