@@ -2,18 +2,58 @@ package com.github.PiotrDuma.ExchangeRateApi.domain;
 
 import com.github.PiotrDuma.ExchangeRateApi.domain.api.CurrencyType;
 import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeRateFacade;
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MapKeyColumn;
+import jakarta.persistence.MapKeyEnumerated;
+import jakarta.persistence.Table;
+import jakarta.persistence.Version;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import java.time.Clock;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
+import org.hibernate.annotations.UuidGenerator;
 
+@Entity
+@Table(name = "currency")
 class ExchangeRate implements ExchangeRateFacade {
+  @Id
+  @UuidGenerator
+  @GeneratedValue
+  @Column(name = "id")
+  private UUID id;
+  @Version
+  private Integer version;
+  @NotBlank
+  @NotNull
+  @Enumerated(EnumType.STRING)
+  @Column(name = "base_currency", nullable = false, updatable = false, unique = true)
   private CurrencyType base;
+  @ElementCollection(targetClass = CurrencyType.class)
+  @Enumerated(EnumType.STRING)
+  @CollectionTable(name = "exchange_currencies", joinColumns = { @JoinColumn(name = "currency_id")})
   private Set<CurrencyType> exchangeCurrencies;
+  @ElementCollection
+  @MapKeyEnumerated(EnumType.STRING)
+  @MapKeyColumn(name = "currency_type")
+  @Column(name = "rate")
+  @CollectionTable(name = "rates", joinColumns = {@JoinColumn(name = "currency_id")})
   private Map<CurrencyType, Double> rates;
   private Instant created;
   private Instant updated;
+  @PositiveOrZero
   private Double convertedSum;
 
   ExchangeRate() {
