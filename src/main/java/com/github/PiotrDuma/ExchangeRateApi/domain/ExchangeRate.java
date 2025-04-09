@@ -4,15 +4,13 @@ import com.github.PiotrDuma.ExchangeRateApi.domain.api.CurrencyType;
 import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeRateFacade;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MapKeyColumn;
-import jakarta.persistence.MapKeyEnumerated;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 import jakarta.validation.constraints.NotBlank;
@@ -27,7 +25,7 @@ import java.util.UUID;
 import org.hibernate.annotations.UuidGenerator;
 
 @Entity
-@Table(name = "currency")
+@Table(name = "currencies")
 class ExchangeRate implements ExchangeRateFacade {
   @Id
   @UuidGenerator
@@ -38,15 +36,15 @@ class ExchangeRate implements ExchangeRateFacade {
   private Integer version;
   @NotBlank
   @NotNull
-  @Enumerated(EnumType.STRING)
+  @Convert(converter = CurrencyTypeConverter.class)
   @Column(name = "base_currency", nullable = false, updatable = false, unique = true)
   private CurrencyType base;
   @ElementCollection(targetClass = CurrencyType.class)
-  @Enumerated(EnumType.STRING)
+  @Convert(converter = CurrencyTypeConverter.class)
   @CollectionTable(name = "exchange_currencies", joinColumns = { @JoinColumn(name = "currency_id")})
   private Set<CurrencyType> exchangeCurrencies;
   @ElementCollection
-  @MapKeyEnumerated(EnumType.STRING)
+  @Convert(converter = CurrencyTypeConverter.class, attributeName = "key")
   @MapKeyColumn(name = "currency_type")
   @Column(name = "rate")
   @CollectionTable(name = "rates", joinColumns = {@JoinColumn(name = "currency_id")})
