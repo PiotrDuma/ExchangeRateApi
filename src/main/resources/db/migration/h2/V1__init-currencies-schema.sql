@@ -16,7 +16,7 @@
 
     create table exchange_currencies (
         currency_id uuid not null,
-        exchange_currencies varchar(3),
+        type varchar(3),
         foreign key (currency_id) references currencies
     );
 

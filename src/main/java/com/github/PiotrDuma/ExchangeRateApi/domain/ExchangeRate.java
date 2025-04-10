@@ -42,6 +42,7 @@ class ExchangeRate implements ExchangeRateFacade {
   @ElementCollection(targetClass = CurrencyType.class)
   @Convert(converter = CurrencyTypeConverter.class)
   @CollectionTable(name = "exchange_currencies", joinColumns = { @JoinColumn(name = "currency_id")})
+  @Column(name = "type")
   private Set<CurrencyType> exchangeCurrencies;
   @ElementCollection
   @Convert(converter = CurrencyTypeConverter.class, attributeName = "key")
