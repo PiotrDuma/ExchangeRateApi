@@ -34,7 +34,7 @@ class ExchangeRate implements ExchangeRateFacade {
   private UUID id;
   @Version
   private Integer version;
-  @NotBlank
+
   @NotNull
   @Convert(converter = CurrencyTypeConverter.class)
   @Column(name = "base_currency", nullable = false, updatable = false, unique = true)
@@ -109,5 +109,24 @@ class ExchangeRate implements ExchangeRateFacade {
 
   protected void setLastUpdated(Instant time){
     this.updated = time;
+  }
+
+  protected UUID getId() {
+    return id;
+  }
+
+  @Override
+  public int hashCode() {
+    return super.hashCode();
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    return super.equals(obj);
+  }
+
+  @Override
+  public String toString() {
+    return super.toString();
   }
 }
