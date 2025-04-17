@@ -13,7 +13,6 @@ import java.util.Optional;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,22 +47,35 @@ class ExchangeServiceImpl implements ExchangeService {
   }
 
   @Override
-  public ExchangeRateServiceDto updateRates(Map<CurrencyType, Double> rates) {
-    throw new RuntimeException("Missing implementation");
+  public ExchangeRateServiceDto updateRates(CurrencyType baseId, Map<CurrencyType, Double> rates) {
+    ExchangeRate exchangeRate = this.repository.findByBase(baseId)
+        .orElseThrow(() -> {
+          throw new ResourceNotFoundException(String.format(NOT_FOUND, baseId));
+        });
+
+    exchangeRate.updateRates(rates, clock);
+    return ExchangeRateToDtoMapper.apply(exchangeRate);
   }
 
   @Override
   public List<ExchangeRateServiceDto> getAll() {
-    throw new RuntimeException("Missing implementation");
+    return this.repository.findAll().stream()
+        .map(ExchangeRateToDtoMapper::apply)
+        .toList();
   }
 
   @Override
   public Optional<ExchangeRateServiceDto> getById(CurrencyType baseId) {
-    throw new RuntimeException("Missing implementation");
+    return this.repository.findByBase(baseId)
+        .map(ExchangeRateToDtoMapper::apply);
   }
 
   @Override
   public void delete(CurrencyType baseId) {
-    throw new RuntimeException("Missing implementation");
+    if(this.repository.existsByBase(baseId)){
+      this.repository.deleteByBase(baseId);
+    }else {
+      throw new ResourceNotFoundException(String.format(NOT_FOUND, baseId));
+    }
   }
 }

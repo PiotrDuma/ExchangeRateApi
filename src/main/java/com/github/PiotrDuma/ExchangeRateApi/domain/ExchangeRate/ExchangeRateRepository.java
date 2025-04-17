@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 interface ExchangeRateRepository extends JpaRepository<ExchangeRate, UUID> {
-
   Optional<ExchangeRate> findByBase(CurrencyType base);
+  boolean existsByBase(CurrencyType base);
+  void deleteByBase(CurrencyType base);
 }

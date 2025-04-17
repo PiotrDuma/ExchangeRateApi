@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface ExchangeService {
   ExchangeRateServiceDto create(ExchangeRateCreateDto dto);
   ExchangeRateServiceDto update(CurrencyType baseId, List<CurrencyType> exchangeCurrencies);
-  ExchangeRateServiceDto updateRates(Map<CurrencyType, Double> rates);
+  ExchangeRateServiceDto updateRates(CurrencyType baseId, Map<CurrencyType, Double> rates);
   List<ExchangeRateServiceDto> getAll();
   Optional<ExchangeRateServiceDto> getById(CurrencyType baseId);
   void delete(CurrencyType baseId);
