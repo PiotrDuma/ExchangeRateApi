@@ -1,16 +1,16 @@
 package com.github.PiotrDuma.ExchangeRateApi.api.ExchangeRate;
 
-import com.github.PiotrDuma.ExchangeRateApi.api.ExchangeRate.dto.ExchangeRateResponseDTO;
-import com.github.PiotrDuma.ExchangeRateApi.infrastructure.web.ExchangeRate.dto.ExchangeRateRequestDTO;
+import com.github.PiotrDuma.ExchangeRateApi.api.ExchangeRate.dto.ExchangeRateCreateDto;
+import com.github.PiotrDuma.ExchangeRateApi.api.ExchangeRate.dto.ExchangeRateServiceDto;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 public interface ExchangeService {
-  ExchangeRateResponseDTO create(ExchangeRateRequestDTO dto);
-  ExchangeRateResponseDTO update(CurrencyType baseId, List<CurrencyType> exchangeCurrencies);
-  ExchangeRateResponseDTO updateRates(Map<CurrencyType, Double> rates);
-  List<ExchangeRateResponseDTO> getAll();
-  Optional<ExchangeRateResponseDTO> getById(CurrencyType baseId);
+  ExchangeRateServiceDto create(ExchangeRateCreateDto dto);
+  ExchangeRateServiceDto update(CurrencyType baseId, List<CurrencyType> exchangeCurrencies);
+  ExchangeRateServiceDto updateRates(Map<CurrencyType, Double> rates);
+  List<ExchangeRateServiceDto> getAll();
+  Optional<ExchangeRateServiceDto> getById(CurrencyType baseId);
   void delete(CurrencyType baseId);
 }

@@ -3,9 +3,7 @@ package com.github.PiotrDuma.ExchangeRateApi.domain.ExchangeRate;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.github.PiotrDuma.ExchangeRateApi.api.ExchangeRate.CurrencyType;
-import com.github.PiotrDuma.ExchangeRateApi.domain.ExchangeRate.ExchangeRate;
-import com.github.PiotrDuma.ExchangeRateApi.domain.ExchangeRate.ExchangeRateToDTOMapper;
-import com.github.PiotrDuma.ExchangeRateApi.api.ExchangeRate.dto.ExchangeRateResponseDTO;
+import com.github.PiotrDuma.ExchangeRateApi.api.ExchangeRate.dto.ExchangeRateServiceDto;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneId;
@@ -20,12 +18,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @Tag("UnitTest")
 class ExchangeRateToDTOMapperTest {
 
-  private ExchangeRateToDTOMapper mapper = new ExchangeRateToDTOMapper();
+  private ExchangeRateToDtoMapper mapper = new ExchangeRateToDtoMapper();
 
   @Test
   void testToDtoMethod(){
     ExchangeRate exRate = getExchangeRate();
-    ExchangeRateResponseDTO result = this.mapper.apply(exRate);
+    ExchangeRateServiceDto result = this.mapper.apply(exRate);
 
     assertThat(result.getBase()).isEqualTo(exRate.getBase());
     assertThat(result.getExchangeCurrencies()).isEqualTo(exRate.getExchangeCurrencies());

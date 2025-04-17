@@ -9,7 +9,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class ExchangeRateRequestDTO {
+public class ExchangeRateRequestDto {
   public static final String NULL_VALUE = "Field cannot be null.";
   public static final String EMPTY_VALUE = "Field cannot be empty.";
 
@@ -19,7 +19,7 @@ public class ExchangeRateRequestDTO {
   @NotEmpty(message = EMPTY_VALUE)
   private Set<CurrencyType> exchangeCurrencies;
 
-  public ExchangeRateRequestDTO(CurrencyType base, Set<CurrencyType> exchangeCurrencies) {
+  public ExchangeRateRequestDto(CurrencyType base, Set<CurrencyType> exchangeCurrencies) {
     this.base = base;
     this.exchangeCurrencies = exchangeCurrencies;
   }

@@ -1,4 +1,4 @@
-package com.github.PiotrDuma.ExchangeRateApi.api.ExchangeRate.dto;
+package com.github.PiotrDuma.ExchangeRateApi.infrastructure.web.ExchangeRate.dto;
 
 import com.github.PiotrDuma.ExchangeRateApi.api.ExchangeRate.CurrencyType;
 import java.time.Instant;
@@ -12,7 +12,7 @@ import lombok.Data;
 @Data
 @Builder
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
-public class ExchangeRateResponseDTO {
+public class ExchangeRateResponseDto {
   private CurrencyType base;
   private Set<CurrencyType> exchangeCurrencies;
   private Map<CurrencyType, Double> rates;

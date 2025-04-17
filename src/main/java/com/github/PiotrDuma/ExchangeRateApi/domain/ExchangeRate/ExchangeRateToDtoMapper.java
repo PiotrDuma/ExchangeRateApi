@@ -1,15 +1,15 @@
 package com.github.PiotrDuma.ExchangeRateApi.domain.ExchangeRate;
 
-import com.github.PiotrDuma.ExchangeRateApi.api.ExchangeRate.dto.ExchangeRateResponseDTO;
+import com.github.PiotrDuma.ExchangeRateApi.api.ExchangeRate.dto.ExchangeRateServiceDto;
 import java.util.function.Function;
 import org.springframework.stereotype.Service;
 
 @Service
-class ExchangeRateToDTOMapper implements Function<ExchangeRate, ExchangeRateResponseDTO> {
+class ExchangeRateToDtoMapper implements Function<ExchangeRate, ExchangeRateServiceDto> {
 
   @Override
-  public ExchangeRateResponseDTO apply(ExchangeRate exchangeRate) {
-    return ExchangeRateResponseDTO.builder()
+  public ExchangeRateServiceDto apply(ExchangeRate exchangeRate) {
+    return ExchangeRateServiceDto.builder()
         .base(exchangeRate.getBase())
         .exchangeCurrencies(exchangeRate.getExchangeCurrencies())
         .rates(exchangeRate.getExchangeRates())
