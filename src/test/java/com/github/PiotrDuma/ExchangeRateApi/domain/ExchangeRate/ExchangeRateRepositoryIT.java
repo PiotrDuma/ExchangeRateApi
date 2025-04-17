@@ -1,10 +1,10 @@
-package com.github.PiotrDuma.ExchangeRateApi.domain;
+package com.github.PiotrDuma.ExchangeRateApi.domain.ExchangeRate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.github.PiotrDuma.ExchangeRateApi.api.ExchangeRate.CurrencyType;
 import com.github.PiotrDuma.ExchangeRateApi.config.FixedClockConfig;
-import com.github.PiotrDuma.ExchangeRateApi.domain.api.CurrencyType;
 import java.time.Clock;
 import java.util.HashSet;
 import java.util.List;

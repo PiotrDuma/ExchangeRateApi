@@ -1,5 +1,6 @@
-package com.github.PiotrDuma.ExchangeRateApi.domain.api;
+package com.github.PiotrDuma.ExchangeRateApi.infrastructure.web.ExchangeRate.dto;
 
+import com.github.PiotrDuma.ExchangeRateApi.api.ExchangeRate.CurrencyType;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import java.util.Set;

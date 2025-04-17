@@ -1,4 +1,4 @@
-package com.github.PiotrDuma.ExchangeRateApi.domain.api;
+package com.github.PiotrDuma.ExchangeRateApi.api.ExchangeRate;
 
 public enum CurrencyType {
   EUR, USD, JPY, BGN, CZK, DKK, GBP, HUF, PLN, RON, SEK, CHF, ISK, NOK, HRK, RUB, TRY, AUD,

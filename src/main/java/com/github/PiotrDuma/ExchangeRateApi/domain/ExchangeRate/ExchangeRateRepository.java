@@ -1,4 +1,4 @@
-package com.github.PiotrDuma.ExchangeRateApi.domain;
+package com.github.PiotrDuma.ExchangeRateApi.domain.ExchangeRate;
 
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;

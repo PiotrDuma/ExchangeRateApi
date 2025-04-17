@@ -1,5 +1,6 @@
-package com.github.PiotrDuma.ExchangeRateApi.domain.api;
+package com.github.PiotrDuma.ExchangeRateApi.api.ExchangeRate.dto;
 
+import com.github.PiotrDuma.ExchangeRateApi.api.ExchangeRate.CurrencyType;
 import java.time.Instant;
 import java.util.Map;
 import java.util.Set;

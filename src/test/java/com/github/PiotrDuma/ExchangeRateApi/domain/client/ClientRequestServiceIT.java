@@ -1,6 +1,6 @@
-package com.github.PiotrDuma.ExchangeRateApi.client;
+package com.github.PiotrDuma.ExchangeRateApi.domain.client;
 
-import com.github.PiotrDuma.ExchangeRateApi.domain.api.CurrencyType;
+import com.github.PiotrDuma.ExchangeRateApi.api.ExchangeRate.CurrencyType;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -13,13 +13,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 @Tag("IT")
 @Disabled //skip context building and invoking external service
-class ClientRequestServiceImplTest {
+class ClientRequestServiceIT {
   private static final CurrencyType base = CurrencyType.PLN;
   private static final Set<CurrencyType> target =
       new HashSet<>(Arrays.asList(CurrencyType.EUR, CurrencyType.USD));
 
   @Autowired
-  private ClientRequestService service;
+  private ClientRequestServiceImpl service;
 
   @Test
   void getInstanceFromClient(){

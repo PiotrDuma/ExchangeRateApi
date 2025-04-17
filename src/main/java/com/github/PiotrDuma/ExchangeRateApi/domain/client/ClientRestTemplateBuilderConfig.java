@@ -1,4 +1,4 @@
-package com.github.PiotrDuma.ExchangeRateApi.client;
+package com.github.PiotrDuma.ExchangeRateApi.domain.client;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.web.client.RestTemplateBuilderConfigurer;

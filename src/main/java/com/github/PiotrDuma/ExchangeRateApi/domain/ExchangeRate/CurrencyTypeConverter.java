@@ -1,6 +1,6 @@
-package com.github.PiotrDuma.ExchangeRateApi.domain;
+package com.github.PiotrDuma.ExchangeRateApi.domain.ExchangeRate;
 
-import com.github.PiotrDuma.ExchangeRateApi.domain.api.CurrencyType;
+import com.github.PiotrDuma.ExchangeRateApi.api.ExchangeRate.CurrencyType;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 

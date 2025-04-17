@@ -1,4 +1,4 @@
-package com.github.PiotrDuma.ExchangeRateApi.exceptions;
+package com.github.PiotrDuma.ExchangeRateApi.infrastructure.exceptions;
 
 import jakarta.servlet.http.HttpServletRequest;
 import java.time.Clock;

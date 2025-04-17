@@ -1,7 +1,7 @@
-package com.github.PiotrDuma.ExchangeRateApi.domain;
+package com.github.PiotrDuma.ExchangeRateApi.domain.ExchangeRate;
 
-import com.github.PiotrDuma.ExchangeRateApi.domain.api.CurrencyType;
-import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeRateFacade;
+import com.github.PiotrDuma.ExchangeRateApi.api.ExchangeRate.CurrencyType;
+import com.github.PiotrDuma.ExchangeRateApi.api.ExchangeRate.ExchangeRateFacade;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
@@ -13,7 +13,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MapKeyColumn;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import java.time.Clock;

@@ -1,10 +1,10 @@
-package com.github.PiotrDuma.ExchangeRateApi.domain;
+package com.github.PiotrDuma.ExchangeRateApi.infrastructure.web.ExchangeRate;
 
-import com.github.PiotrDuma.ExchangeRateApi.domain.api.CurrencyType;
-import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeRateRequestDTO;
-import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeRateResponseDTO;
-import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeService;
-import com.github.PiotrDuma.ExchangeRateApi.exceptions.ResourceNotFoundException;
+import com.github.PiotrDuma.ExchangeRateApi.api.ExchangeRate.CurrencyType;
+import com.github.PiotrDuma.ExchangeRateApi.api.ExchangeRate.dto.ExchangeRateResponseDTO;
+import com.github.PiotrDuma.ExchangeRateApi.api.ExchangeRate.ExchangeService;
+import com.github.PiotrDuma.ExchangeRateApi.infrastructure.exceptions.ResourceNotFoundException;
+import com.github.PiotrDuma.ExchangeRateApi.infrastructure.web.ExchangeRate.dto.ExchangeRateRequestDTO;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;

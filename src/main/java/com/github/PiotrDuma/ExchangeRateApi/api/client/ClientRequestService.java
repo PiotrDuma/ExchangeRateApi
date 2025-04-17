@@ -1,7 +1,7 @@
-package com.github.PiotrDuma.ExchangeRateApi.client;
+package com.github.PiotrDuma.ExchangeRateApi.api.client;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.github.PiotrDuma.ExchangeRateApi.domain.api.CurrencyType;
+import com.github.PiotrDuma.ExchangeRateApi.api.ExchangeRate.CurrencyType;
 import java.util.Set;
 
 public interface ClientRequestService {

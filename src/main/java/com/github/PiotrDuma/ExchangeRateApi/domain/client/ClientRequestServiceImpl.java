@@ -1,7 +1,8 @@
-package com.github.PiotrDuma.ExchangeRateApi.client;
+package com.github.PiotrDuma.ExchangeRateApi.domain.client;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.github.PiotrDuma.ExchangeRateApi.domain.api.CurrencyType;
+import com.github.PiotrDuma.ExchangeRateApi.api.ExchangeRate.CurrencyType;
+import com.github.PiotrDuma.ExchangeRateApi.api.client.ClientRequestService;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

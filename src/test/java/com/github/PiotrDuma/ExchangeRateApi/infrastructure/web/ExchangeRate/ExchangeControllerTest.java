@@ -1,7 +1,7 @@
-package com.github.PiotrDuma.ExchangeRateApi.domain;
+package com.github.PiotrDuma.ExchangeRateApi.infrastructure.web.ExchangeRate;
 
-import static com.github.PiotrDuma.ExchangeRateApi.domain.ExchangeController.URI;
-import static com.github.PiotrDuma.ExchangeRateApi.domain.ExchangeController.URL;
+import static com.github.PiotrDuma.ExchangeRateApi.infrastructure.web.ExchangeRate.ExchangeController.URI;
+import static com.github.PiotrDuma.ExchangeRateApi.infrastructure.web.ExchangeRate.ExchangeController.URL;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasEntry;
@@ -23,11 +23,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.PiotrDuma.ExchangeRateApi.domain.ExchangeController.UpdateDto;
-import com.github.PiotrDuma.ExchangeRateApi.domain.api.CurrencyType;
-import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeRateRequestDTO;
-import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeRateResponseDTO;
-import com.github.PiotrDuma.ExchangeRateApi.domain.api.ExchangeService;
+import com.github.PiotrDuma.ExchangeRateApi.api.ExchangeRate.dto.ExchangeRateResponseDTO;
+import com.github.PiotrDuma.ExchangeRateApi.infrastructure.web.ExchangeRate.ExchangeController.UpdateDto;
+import com.github.PiotrDuma.ExchangeRateApi.api.ExchangeRate.CurrencyType;
+import com.github.PiotrDuma.ExchangeRateApi.api.ExchangeRate.ExchangeService;
+import com.github.PiotrDuma.ExchangeRateApi.infrastructure.web.ExchangeRate.dto.ExchangeRateRequestDTO;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneId;

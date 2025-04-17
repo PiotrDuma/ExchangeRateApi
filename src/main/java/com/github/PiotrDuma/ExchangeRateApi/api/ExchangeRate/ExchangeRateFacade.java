@@ -1,4 +1,4 @@
-package com.github.PiotrDuma.ExchangeRateApi.domain.api;
+package com.github.PiotrDuma.ExchangeRateApi.api.ExchangeRate;
 
 import java.time.Instant;
 import java.util.Map;

@@ -1,5 +1,7 @@
-package com.github.PiotrDuma.ExchangeRateApi.domain.api;
+package com.github.PiotrDuma.ExchangeRateApi.api.ExchangeRate;
 
+import com.github.PiotrDuma.ExchangeRateApi.api.ExchangeRate.dto.ExchangeRateResponseDTO;
+import com.github.PiotrDuma.ExchangeRateApi.infrastructure.web.ExchangeRate.dto.ExchangeRateRequestDTO;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
