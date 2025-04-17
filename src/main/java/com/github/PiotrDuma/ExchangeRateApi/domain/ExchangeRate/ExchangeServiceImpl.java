@@ -27,6 +27,7 @@ class ExchangeServiceImpl implements ExchangeService {
 
   @Override
   public ExchangeRateServiceDto create(ExchangeRateCreateDto dto) {
+    log.debug("Invoke ExchangeService::create");
     ExchangeRate entity = new ExchangeRate(dto.getBase(), dto.getExchangeCurrencies(), this.clock);
     ExchangeRate saved = this.repository.save(entity);
     return ExchangeRateToDtoMapper.apply(saved);
@@ -35,6 +36,7 @@ class ExchangeServiceImpl implements ExchangeService {
   @Override
   public ExchangeRateServiceDto update(CurrencyType baseId,
       List<CurrencyType> exchangeCurrencies) {
+    log.debug("Invoke ExchangeService::update");
     Set<CurrencyType> newTypes = new HashSet<>(exchangeCurrencies);
 
     ExchangeRate exchangeRate = this.repository.findByBase(baseId)
@@ -48,6 +50,7 @@ class ExchangeServiceImpl implements ExchangeService {
 
   @Override
   public ExchangeRateServiceDto updateRates(CurrencyType baseId, Map<CurrencyType, Double> rates) {
+    log.debug("Invoke ExchangeService::updateRates");
     ExchangeRate exchangeRate = this.repository.findByBase(baseId)
         .orElseThrow(() -> {
           throw new ResourceNotFoundException(String.format(NOT_FOUND, baseId));
@@ -72,6 +75,7 @@ class ExchangeServiceImpl implements ExchangeService {
 
   @Override
   public void delete(CurrencyType baseId) {
+    log.debug("Invoke ExchangeService::delete");
     if(this.repository.existsByBase(baseId)){
       this.repository.deleteByBase(baseId);
     }else {
