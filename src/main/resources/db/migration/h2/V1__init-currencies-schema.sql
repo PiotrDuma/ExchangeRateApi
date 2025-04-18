@@ -6,7 +6,7 @@
 
     CREATE TABLE currencies (
           id uuid NOT NULL,
-          version integer,
+          version integer default 0,
           created timestamp(6) with time zone,
           updated timestamp(6) with time zone,
           base_currency varchar(3) NOT NULL UNIQUE,

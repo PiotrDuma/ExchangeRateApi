@@ -31,7 +31,9 @@ class ExchangeRate implements ExchangeRateFacade {
   @GeneratedValue
   @Column(name = "id")
   private UUID id;
+
   @Version
+  @Column(name = "version")
   private Integer version;
 
   @NotNull

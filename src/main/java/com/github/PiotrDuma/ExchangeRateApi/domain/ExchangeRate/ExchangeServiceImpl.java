@@ -76,10 +76,9 @@ class ExchangeServiceImpl implements ExchangeService {
   @Override
   public void delete(CurrencyType baseId) {
     log.debug("Invoke ExchangeService::delete");
-    if(this.repository.existsByBase(baseId)){
-      this.repository.deleteByBase(baseId);
-    }else {
-      throw new ResourceNotFoundException(String.format(NOT_FOUND, baseId));
-    }
+    ExchangeRate entity = this.repository.findByBase(baseId)
+        .orElseThrow(() -> new ResourceNotFoundException(String.format(NOT_FOUND, baseId)));
+
+    this.repository.delete(entity);
   }
 }
