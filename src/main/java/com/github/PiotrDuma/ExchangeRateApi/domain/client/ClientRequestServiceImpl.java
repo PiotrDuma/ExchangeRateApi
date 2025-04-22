@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -19,7 +20,7 @@ class ClientRequestServiceImpl implements ClientRequestService {
   private final RestTemplateBuilder restTemplateBuilder;
 
   @Override
-  public JsonNode getExchangeRate(CurrencyType base, Set<CurrencyType> target) {
+  public JsonNode getExchangeRate(CurrencyType base, Set<CurrencyType> target) throws RestClientException {
     log.debug("Send GET request via " + this.getClass().getName());
     RestTemplate restTemplate = restTemplateBuilder.build();
 
