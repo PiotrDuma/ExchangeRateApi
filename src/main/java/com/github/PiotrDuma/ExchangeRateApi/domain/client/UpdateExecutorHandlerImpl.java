@@ -27,20 +27,17 @@ class UpdateExecutorHandlerImpl implements UpdateExecutorHandler {
   private final ExchangeService exchangeService;
 
   @Override
-  public void updateRates(CurrencyType type) throws RestClientException{
-    ExchangeRateServiceDto exRate = checkIfExists(type);
-
+  public void updateRates(CurrencyType type){
     try {
+      ExchangeRateServiceDto exRate = checkIfExists(type);
       JsonNode json = this.requestService.getExchangeRate(exRate.getBase(),
           exRate.getExchangeCurrencies());
       ExchangeRateData parsed = ExchangeRateData.parse(json);
       this.exchangeService.updateRates(exRate.getBase(), parsed.data().rates());
     }catch (RestClientException ex){
       log.error(EXCEPTION + CLIENT_EXCEPTION);
-    }catch (IllegalArgumentException e){
+    }catch (Exception e){
       log.error(EXCEPTION + CAST_EXCEPTION);
-    }catch(Exception e){
-      throw new RestClientException(EXCEPTION + e.getMessage());//propagate exception
     }
   }
 

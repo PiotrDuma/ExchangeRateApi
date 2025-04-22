@@ -1,7 +1,6 @@
 package com.github.PiotrDuma.ExchangeRateApi.domain.client;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
@@ -53,13 +52,13 @@ class UpdateExecutorHandlerImplTest {
   }
 
   @Test
-  void shouldThrowRestClientExceptionWhenCurrencyIsNotFound(){
+  void shouldConsumeRestClientExceptionWhenCurrencyIsNotFound(){
     when(this.exchangeService.getById(any())).thenReturn(Optional.empty());
 
-    RestClientException exception = assertThrows(RestClientException.class,
-        () -> this.service.updateRates(BASE));
+    this.service.updateRates(BASE);
 
-    assertThat(exception.getMessage()).isEqualTo(UpdateExecutorHandlerImpl.NOT_FOUND);
+    verify(this.clientRequestService, times(0)).getExchangeRate(any(), any());
+    verify(this.exchangeService, times(0)).updateRates(any(), any());
   }
 
   @Test
@@ -94,7 +93,7 @@ class UpdateExecutorHandlerImplTest {
   }
 
   @Test
-  void serviceShouldCatchExceptionAndStopTransactionWhenJsonParsingThrows(){
+  void serviceShouldCatchExceptionAndStopTransactionWhenJsonParsingThrowsException(){
     JsonNode node = mock(JsonNode.class);
 
     when(this.exchangeService.getById(any())).thenReturn(Optional.of(exRateDto));
