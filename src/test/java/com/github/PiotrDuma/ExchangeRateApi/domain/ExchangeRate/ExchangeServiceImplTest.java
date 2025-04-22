@@ -235,7 +235,8 @@ class ExchangeServiceImplTest {
   @Test
   void deleteShouldThrowResourceNotFoundExceptionIfNotFound() {
     String message = String.format(ExchangeServiceImpl.NOT_FOUND, BASE);
-    when(this.repo.existsByBase(any())).thenReturn(false);
+
+    when(this.repo.findByBase(any())).thenReturn(Optional.empty());
 
     ResourceNotFoundException exception = assertThrows(
         ResourceNotFoundException.class, () -> this.service.delete(BASE));
@@ -245,15 +246,17 @@ class ExchangeServiceImplTest {
 
   @Test
   void deleteShouldInvokeValidMethods() {
-    when(this.repo.existsByBase(any())).thenReturn(true);
-    doNothing().when(this.repo).deleteByBase(any());
+    ExchangeRate mock = mock(ExchangeRate.class);
+    when(this.repo.findByBase(any())).thenReturn(Optional.of(mock));
+    doNothing().when(this.repo).delete(any());
 
     this.service.delete(BASE);
 
-    verify(this.repo, times(1)).existsByBase(baseCaptor.capture());
+    verify(this.repo, times(1)).findByBase(baseCaptor.capture());
+    verify(this.repo, times(1)).delete(exCaptor.capture());
+
     assertThat(baseCaptor.getValue()).isEqualTo(BASE);
-    verify(this.repo, times(1)).deleteByBase(baseCaptor.capture());
-    assertThat(baseCaptor.getValue()).isEqualTo(BASE);
+    assertThat(exCaptor.getValue()).isEqualTo(mock);
   }
 
   private ExchangeRate getExchangeRate() {
