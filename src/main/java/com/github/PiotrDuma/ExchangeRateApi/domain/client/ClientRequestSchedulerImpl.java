@@ -46,8 +46,8 @@ class ClientRequestSchedulerImpl implements ClientRequestScheduler {
 
     try{
       for (CurrencyType type : types) {
-        ScheduledFuture<?> request = scheduler.scheduleWithFixedDelay(
-            () -> executeTask(type), INIT_DELAY, PERIOD_DELAY, TimeUnit.SECONDS);
+        ScheduledFuture<?> request = scheduler.schedule(
+            () -> executeTask(type), PERIOD_DELAY, TimeUnit.SECONDS);
 
         scheduler.schedule(() -> terminateTask(request), TIMEOUT, TimeUnit.SECONDS);
       }

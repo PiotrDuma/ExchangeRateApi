@@ -33,7 +33,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 @Tag("UnitTest")
 class ClientRequestSchedulerImplTest {
-  private static final Long INIT_DELAY = 0L;
   private static final Long PERIOD_DELAY = 10L;
   private static final Long TIMEOUT = 60L;
   @Mock
@@ -78,8 +77,8 @@ class ClientRequestSchedulerImplTest {
 
     this.service.execute();
 
-    verify(schedulerMock, times(1)).scheduleWithFixedDelay(
-        any(Runnable.class), eq(INIT_DELAY), eq(PERIOD_DELAY), eq(TimeUnit.SECONDS));
+    verify(schedulerMock, times(1)).schedule(
+        any(Runnable.class), eq(PERIOD_DELAY), eq(TimeUnit.SECONDS));
     verify(schedulerMock, times(1))
         .schedule(any(Runnable.class), eq(TIMEOUT), eq(TimeUnit.SECONDS));
   }
@@ -95,8 +94,8 @@ class ClientRequestSchedulerImplTest {
 
     this.service.execute();
 
-    verify(schedulerMock, times(1)).scheduleWithFixedDelay(
-        runnableCaptor.capture(), eq(INIT_DELAY), eq(PERIOD_DELAY), eq(TimeUnit.SECONDS));
+    verify(schedulerMock, times(1)).schedule(
+        runnableCaptor.capture(), eq(PERIOD_DELAY), eq(TimeUnit.SECONDS));
     verify(schedulerMock, times(1))
         .schedule(any(Runnable.class), eq(TIMEOUT), eq(TimeUnit.SECONDS));
 
@@ -114,13 +113,13 @@ class ClientRequestSchedulerImplTest {
 
     when(this.exchangeService.getAll()).thenReturn(List.of(dto1, dto2, dto3));
     doNothing().when(this.updateExecutorHandler).updateRates(any());
-    doReturn(scheduledFuture).when(schedulerMock).scheduleWithFixedDelay(any(Runnable.class),
-        eq(INIT_DELAY), eq(PERIOD_DELAY), eq(TimeUnit.SECONDS));
+    doReturn(scheduledFuture).when(schedulerMock).schedule(any(Runnable.class),
+        eq(PERIOD_DELAY), eq(TimeUnit.SECONDS));
 
     this.service.execute();
 
-    verify(schedulerMock, times(3)).scheduleWithFixedDelay(
-        runnableCaptor.capture(), eq(INIT_DELAY), eq(PERIOD_DELAY), eq(TimeUnit.SECONDS));
+    verify(schedulerMock, times(3)).schedule(
+        runnableCaptor.capture(), eq(PERIOD_DELAY), eq(TimeUnit.SECONDS));
     verify(schedulerMock, times(3))
         .schedule(any(Runnable.class), eq(TIMEOUT), eq(TimeUnit.SECONDS));
 
@@ -135,8 +134,8 @@ class ClientRequestSchedulerImplTest {
 
     when(this.exchangeService.getAll()).thenReturn(List.of(dto));
 
-    doReturn(scheduledFuture).when(schedulerMock).scheduleWithFixedDelay(any(Runnable.class),
-        eq(INIT_DELAY), eq(PERIOD_DELAY), eq(TimeUnit.SECONDS));
+    doReturn(scheduledFuture).when(schedulerMock).schedule(any(Runnable.class),
+        eq(PERIOD_DELAY), eq(TimeUnit.SECONDS));
     when(schedulerMock.schedule(any(Runnable.class), eq(TIMEOUT), eq(TimeUnit.SECONDS)))
         .thenAnswer(invocation -> {
           Runnable timeoutTask = invocation.getArgument(0);
