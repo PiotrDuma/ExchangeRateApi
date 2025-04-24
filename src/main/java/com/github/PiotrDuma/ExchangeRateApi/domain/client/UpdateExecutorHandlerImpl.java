@@ -22,12 +22,14 @@ class UpdateExecutorHandlerImpl implements UpdateExecutorHandler {
   public static final String EXCEPTION = "UpdateExecutorHandlerImpl: ";
   public static final String CLIENT_EXCEPTION = "Client Request execution failed: ";
   public static final String CAST_EXCEPTION = "Json object parse failure.";
+  private static final String EXECUTE = "UpdateExecutorHandler: Execute update for: %s";
 
   private final ClientRequestService requestService;
   private final ExchangeService exchangeService;
 
   @Override
   public void updateRates(CurrencyType type){
+    log.info(String.format(EXECUTE, type));
     try {
       ExchangeRateServiceDto exRate = checkIfExists(type);
       JsonNode json = this.requestService.getExchangeRate(exRate.getBase(),
