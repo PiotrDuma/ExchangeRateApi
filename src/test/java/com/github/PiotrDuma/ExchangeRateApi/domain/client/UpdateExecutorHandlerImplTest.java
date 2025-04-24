@@ -104,6 +104,25 @@ class UpdateExecutorHandlerImplTest {
     verify(this.exchangeService, times(0)).updateRates(any(), any());
   }
 
+  @Test
+  void shouldUpdateRatesWithReceivedJsonWithoutBaseType() throws Exception{
+    CurrencyType newBase = CurrencyType.PLN;
+
+    when(this.exchangeService.getById(any())).thenReturn(Optional.of(exRateDto));
+    when(exRateDto.getExchangeCurrencies()).thenReturn(Set.of());
+    when(exRateDto.getBase()).thenReturn(mock(CurrencyType.class));
+    when(this.clientRequestService.getExchangeRate(any(), any())).thenReturn(getJsonNodeWithBaseExchange());
+
+    this.service.updateRates(newBase);
+
+    verify(this.exchangeService, times(1))
+        .updateRates(any(), mapCaptor.capture());
+    Map<CurrencyType, Double> resultMap = mapCaptor.getValue();
+
+    assertThat(resultMap.size()).isEqualTo(3);
+    assertThat(resultMap.containsKey(newBase)).isFalse();
+  }
+
   private JsonNode getJsonNode() throws Exception{
     String json = """
       {
@@ -111,6 +130,20 @@ class UpdateExecutorHandlerImplTest {
               "KRW": 123
           }
       }
+      """;
+    return objectMapper.readTree(json);
+  }
+
+  private JsonNode getJsonNodeWithBaseExchange() throws Exception{
+    String json = """
+    {
+        "data": {
+            "CAD": 0.3678174872,
+            "EUR": 0.2340384378,
+            "PLN": 1,
+            "USD": 0.2652083357
+        }
+    }
       """;
     return objectMapper.readTree(json);
   }

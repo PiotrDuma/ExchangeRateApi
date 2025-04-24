@@ -7,6 +7,7 @@ import com.github.PiotrDuma.ExchangeRateApi.api.ExchangeRate.dto.ExchangeRateSer
 import com.github.PiotrDuma.ExchangeRateApi.api.client.ClientRequestService;
 import com.github.PiotrDuma.ExchangeRateApi.api.client.UpdateExecutorHandler;
 import com.github.PiotrDuma.ExchangeRateApi.domain.client.ClientJsonObject.ExchangeRateData;
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,7 @@ class UpdateExecutorHandlerImpl implements UpdateExecutorHandler {
       JsonNode json = this.requestService.getExchangeRate(exRate.getBase(),
           exRate.getExchangeCurrencies());
       ExchangeRateData parsed = ExchangeRateData.parse(json);
+      parsed.data().rates().remove(type); //filter base currency from rates: base always equals to 1
       this.exchangeService.updateRates(exRate.getBase(), parsed.data().rates());
     }catch (RestClientException ex){
       log.error(EXCEPTION + CLIENT_EXCEPTION);
