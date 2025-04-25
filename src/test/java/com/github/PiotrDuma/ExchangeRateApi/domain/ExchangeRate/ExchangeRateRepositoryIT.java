@@ -17,10 +17,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 @DataJpaTest
 @Tag("IT")
+@ActiveProfiles(profiles = "test")
 @Import(FixedClockConfig.class)
 class ExchangeRateRepositoryIT {
   private static final UUID USD_ID = UUID.fromString("9ce00e0f-0454-45df-9786-3cf24c28ea24");

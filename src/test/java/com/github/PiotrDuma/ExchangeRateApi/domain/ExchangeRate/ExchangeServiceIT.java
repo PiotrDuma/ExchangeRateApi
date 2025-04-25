@@ -21,11 +21,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @Import(FixedClockConfig.class)
 @Tag("IT")
+@ActiveProfiles(profiles = "test")
 class ExchangeServiceIT {
 
   private static final CurrencyType BASE = CurrencyType.USD;
