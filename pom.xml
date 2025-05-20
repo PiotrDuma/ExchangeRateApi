@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.github.PiotrDuma</groupId>
 	<artifactId>ExchangeRateApi</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0-SNAPSHOT</version>
 	<name>ExchangeRateApi</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
