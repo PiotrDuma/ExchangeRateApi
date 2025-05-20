@@ -2,3 +2,39 @@
 
 # ExchangeRateApi
 A Springboot application for collecting real-time and historical currency exchange rates. This RESTful service provides access to collect actual exchange rates with support for 33 global currencies with an external REST service via RestTemplate at scheduled time periods. The goal is to provide data exchange communication between REST services and to change an aproach on the data persistance from storing POJO (Plain Old Java Object) as a set of values to an entity that also records the data changes.
+
+## Setup and build
+
+1. Download project from repository
+```
+    git clone https://github.com/PiotrDuma/payroll.git
+```
+2. Set database connection in application-dev.properties file.
+```
+    ## filepath: 'ExchangeRateApi\src\main\resources\application-prod.properties'
+
+    spring.datasource.url=
+    spring.datasource.username=
+    spring.datasource.password=
+```
+3. Move to project folder
+```
+cd ExchangeRateApi
+```
+4. Build project with Maven
+```
+mvn clean install 
+```
+5. Make sure your database connection is available.
+
+6. Run application in your command window
+```
+java -jar -Dspring.profiles.active=dev target/ExchangeRateApi-1.0-SNAPSHOT.jar
+```
+> [!NOTE]
+> If your application failed to start due to exposed port 8080 was already in use, try to kill the process using port 8080 to release it or change the application port setup in application confoguration:
+```
+## filepath: 'ExchangeRateApi\src\main\resources\application.properties'
+## change the value of 8080
+server.port=${PORT:8080}
+```
