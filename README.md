@@ -5,6 +5,13 @@ A Springboot application for collecting real-time and historical currency exchan
 
 ## Setup and build
 
+> [!IMPORTANT]
+> Custom usage of the application requires registration on [freecurrencyapi.com](https://freecurrencyapi.com/) site to receive free token necessary to communicate with external service. To set up key value into project configuration replace token value in application.properties file or run project with command typed below:
+```
+## replace `<token>` with string value of generated token
+java -jar -Dspring.profiles.active=dev -Drest.client.token=<token> target/ExchangeRateApi-1.0-SNAPSHOT.jar
+```
+
 1. Download project from repository
 ```
     git clone https://github.com/PiotrDuma/payroll.git
